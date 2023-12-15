@@ -6,27 +6,72 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:59:22 by atamas            #+#    #+#             */
-/*   Updated: 2023/12/15 19:36:52 by atamas           ###   ########.fr       */
+/*   Updated: 2023/12/15 21:17:51 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
+#include <stdlib.h>
 #include <unistd.h>
+#include <stdio.h>
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 20
 #endif
 
-char	*get_next_line(int fd)
+int	ft_strlen(const char *string)
 {
-	char		*line_read;
-	char		*ptr;
-	static char	*my_static;
+    int	len;
 
-	my_static = ft_read(fd, my_static);
-	line_read = ft_copy_until_n(my_static);
-	my_static = ft_static_handler(my_static, line_read);
-	return (line_read);
+    len = 0;
+    if (!string)
+        return (0);
+    while (string[len] != '\0')
+        len++;
+    return (len);
+}
+
+char	*create_copy_return(char *string, char *temp)
+{
+    char	*joined;
+    int		len_string = ft_strlen(string);
+    int		len_temp = ft_strlen(temp);
+    int		i;
+    int		j;
+
+    i = -1;
+    j = 0;
+    joined = malloc(sizeof(char) * (len_string + len_temp + 1));
+    if (!joined)
+        return (NULL);
+    joined[len_string + len_temp] = '\0';
+    while (++i < len_string)
+        joined[i] = string[i];
+    while (j < len_temp)
+        joined[i++] = temp[j++];
+    free(string);
+    free(temp);
+    return (joined);
+}
+
+char	*ft_strchr(const char *string, int c)
+{
+    char	ch;
+
+    ch = (char)c;
+    if (!string)
+        return (NULL);
+    while (*string != '\0')
+    {
+        if (*string == ch)
+        {
+            return ((char *)string);
+        }
+        string++;
+    }
+    if (ch == '\0')
+        return ((char *)string);
+    return (NULL);
 }
 
 char	*ft_static_handler(char	*static_str, char *string)
@@ -43,12 +88,13 @@ char	*ft_static_handler(char	*static_str, char *string)
 		return (NULL);
 	}
 	i = ft_strlen(string);
-	if (static_str[i] == '\n')
+	if (string[i - 1] == '\n')
 	{
-		static_str += (i + 1);
+		static_str += i;
+        memory = malloc(sizeof(char) * (ft_strlen(static_str) + 1));
 		while (static_str[++j] != '\0')
 			memory[j] = static_str[j];
-		free(static_str);
+        memory[j] = '\0';
 		return (memory);
 	}
 	else
@@ -103,57 +149,13 @@ char	*ft_read(int fd, char	*string)
 	return (string);
 }
 
-char	*create_copy_return(char *string, char *temp)
+char	*get_next_line(int fd)
 {
-	char	*joined;
-	int		len_string = ft_strlen(string);
-	int		len_temp = ft_strlen(temp);
-	int		i;
-	int		j;
+    char		*line_read;
+    static char	*my_static;
 
-	i = -1;
-	j = 0;
-	joined = malloc(sizeof(char) * (len_string + len_temp + 1));
-	if (!joined)
-		return (NULL);
-	joined[len_string + len_temp] = '\0';
-	while (++i < len_string)
-		joined[i] = string[i];
-	while (j < len_temp)
-		joined[i++] = temp[j++];
-	free(string);
-	free(temp);
-	return (joined);
-}
-
-char	*ft_strchr(const char *string, int c)
-{
-	char	ch;
-
-	ch = (char)c;
-	if (!string)
-		return (NULL);
-	while (*string != '\0')
-	{
-		if (*string == ch)
-		{
-			return ((char *)string);
-		}
-		string++;
-	}
-	if (ch == '\0')
-		return ((char *)string);
-	return (NULL);
-}
-
-int	ft_strlen(const char *string)
-{
-	int	len;
-
-	len = 0;
-	if (!string)
-		return (0);
-	while (string[len] != '\0')
-		len++;
-	return (len);
+    my_static = ft_read(fd, my_static);
+    line_read = ft_copy_until_n(my_static);
+    my_static = ft_static_handler(my_static, line_read);
+    return (line_read);
 }
