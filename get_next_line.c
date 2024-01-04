@@ -6,16 +6,14 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:59:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/01/03 15:04:21 by atamas           ###   ########.fr       */
+/*   Updated: 2024/01/04 16:05:51 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
-#include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
+// #include <fcntl.h>
+// #include <stdio.h>
 #include "get_next_line.h"
 
 #ifndef BUFFER_SIZE
@@ -54,20 +52,20 @@ char	*ft_static_handler(char	*static_str, char *string)
 	i = 0;
 	j = 0;
 	if (!string)
-		return (free(static_str), static_str = NULL, NULL);
+		return (free(static_str), NULL);
 	i = ft_strlen(string);
 	if (i > 0 && string[i - 1] == '\n')
 	{
 		memory = malloc(sizeof(char) * (ft_strlen(static_str + i) + 1));
 		if (!memory)
-			return (free(static_str), static_str = NULL, NULL);
+			return (free(static_str), NULL);
 		while (static_str[j + i] != '\0')
 		{
 			memory[j] = static_str[j + i];
 			j++;
 		}
 		memory[j] = '\0';
-		return (free(static_str), static_str = NULL, memory);
+		return (free(static_str), memory);
 	}
 	else
 		return (free(static_str), NULL);
@@ -121,7 +119,11 @@ char	*get_next_line(int fd)
 	static char	*my_static;
 
 	if (read(fd, 0, 0) < 0 || fd < 0 || BUFFER_SIZE <= 0)
+	{
+		if (my_static)
+			free(my_static);
 		return (NULL, my_static = NULL);
+	}
 	my_static = ft_read(fd, my_static);
 	if (my_static == NULL)
 		return (NULL);
@@ -143,5 +145,4 @@ char	*get_next_line(int fd)
 	ptrtoread =  get_next_line(fd);
 	printf("%s\n", ptrtoread);
 	close(fd);
-	// WHat happens when i run the program again??
 } */
