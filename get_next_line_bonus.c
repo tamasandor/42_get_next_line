@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:59:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/01/09 23:45:05 by atamas           ###   ########.fr       */
+/*   Updated: 2024/01/09 23:38:14 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,23 @@
 #include <unistd.h>
 // #include <fcntl.h>
 // #include <stdio.h>
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 20
 #endif
+
+/* int	ft_strlen(const char *string)
+{
+	int	len;
+
+	len = 0;
+	if (!string)
+		return (0);
+	while (string[len] != '\0')
+		len++;
+	return (len);
+} */
 
 char	*create_copy_return(char *my_static, char *temp, int *myline)
 {
@@ -126,21 +138,21 @@ char	*get_next_line(int fd)
 	char		*line_read;
 	int			nline_pos;
 	int			myline;
-	static char	*my_static;
+	static char	*my_static[4096];
 
 	nline_pos = -1;
 	myline = 0;
 	if (read(fd, 0, 0) < 0 || fd < 0 || BUFFER_SIZE <= 0)
 	{
-		if (my_static)
-			free(my_static);
-		return (NULL, my_static = NULL);
+		if (my_static[fd])
+			free(my_static[fd]);
+		return (NULL, my_static[fd] = NULL);
 	}
-	my_static = ft_read(fd, my_static, &nline_pos, &myline);
-	if (my_static == NULL)
+	my_static[fd] = ft_read(fd, my_static[fd], &nline_pos, &myline);
+	if (my_static[fd] == NULL)
 		return (NULL);
-	line_read = ft_copy_until_n(my_static, nline_pos, myline);
-	my_static = ft_static_handler(my_static, line_read, nline_pos);
+	line_read = ft_copy_until_n(my_static[fd], nline_pos, myline);
+	my_static[fd] = ft_static_handler(my_static[fd], line_read, nline_pos);
 	return (line_read);
 }
 

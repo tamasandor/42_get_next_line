@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 19:08:59 by atamas            #+#    #+#             */
-/*   Updated: 2024/01/09 23:39:19 by atamas           ###   ########.fr       */
+/*   Updated: 2024/01/09 20:57:21 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char	*ft_strchr(const char *string, int c, int *nline_pos)
 	char	ch;
 	int		i;
 
-	ch = (char)c;
 	i = 0;
+	ch = (char)c;
 	if (!string)
 		return (NULL);
 	while (*string != '\0')
@@ -40,8 +40,8 @@ char	*ft_strchr(const char *string, int c, int *nline_pos)
 			*nline_pos = i;
 			return ((char *)string);
 		}
-		string++;
 		i++;
+		string++;
 	}
 	if (ch == '\0')
 		return ((char *)string);
