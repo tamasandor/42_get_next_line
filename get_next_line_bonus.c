@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:59:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/01/09 23:38:14 by atamas           ###   ########.fr       */
+/*   Updated: 2024/01/10 15:50:49 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,9 @@ char	*get_next_line(int fd)
 	fd = open("file.txt", O_RDONLY);
 	ptrtoread =  get_next_line(fd);
 	printf("%s\n", ptrtoread);
+	free(ptrtoread);
 	ptrtoread =  get_next_line(fd);
 	printf("%s\n", ptrtoread);
+	free(ptrtoread);
 	close(fd);
 } */
