@@ -6,7 +6,7 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:59:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/01/10 15:50:49 by atamas           ###   ########.fr       */
+/*   Updated: 2024/01/10 16:21:55 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*create_copy_return(char *my_static, char *temp, int *myline)
 	}
 	while (j < len_temp)
 		joined[i++] = temp[j++];
-	return (free(my_static), free(temp), my_static = NULL, temp = NULL, joined);
+	return (free(my_static), my_static = NULL, temp = NULL, joined);
 }
 
 char	*ft_static_handler(char	*static_str, char *string, int nline_pos)
@@ -120,17 +120,17 @@ char	*ft_read(int fd, char	*my_static, int *nline_pos, int *myline)
 	char	*temp;
 	int		read_val;
 
+	temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	read_val = 1;
 	while (ft_strchr(my_static, '\n', nline_pos) == NULL && read_val > 0)
 	{
-		temp = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		read_val = read(fd, temp, BUFFER_SIZE);
 		if (read_val == -1)
 			return (free(temp), free(my_static), NULL);
 		temp[read_val] = '\0';
 		my_static = create_copy_return(my_static, temp, myline);
 	}
-	return (my_static);
+	return (free(temp), my_static);
 }
 
 char	*get_next_line(int fd)
