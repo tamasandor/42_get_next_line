@@ -6,12 +6,13 @@
 /*   By: atamas <atamas@student.42wolfsburg.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 16:59:22 by atamas            #+#    #+#             */
-/*   Updated: 2024/01/10 16:21:55 by atamas           ###   ########.fr       */
+/*   Updated: 2024/01/14 14:56:44 by atamas           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
+#include <limits.h>
 // #include <fcntl.h>
 // #include <stdio.h>
 #include "get_next_line_bonus.h"
@@ -19,18 +20,6 @@
 #ifndef BUFFER_SIZE
 # define BUFFER_SIZE 20
 #endif
-
-/* int	ft_strlen(const char *string)
-{
-	int	len;
-
-	len = 0;
-	if (!string)
-		return (0);
-	while (string[len] != '\0')
-		len++;
-	return (len);
-} */
 
 char	*create_copy_return(char *my_static, char *temp, int *myline)
 {
@@ -138,7 +127,7 @@ char	*get_next_line(int fd)
 	char		*line_read;
 	int			nline_pos;
 	int			myline;
-	static char	*my_static[4096];
+	static char	*my_static[OPEN_MAX];
 
 	nline_pos = -1;
 	myline = 0;
